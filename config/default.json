@@ -1,4 +1,6 @@
 {
     "mongoURI":"mongodb+srv://admin:admin@cluster0.hlubs.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "jwtSecret":"holy_bible"
+    "jwtSecret":"holy_bible",
+    "githubClientId":"dabdfad570eb59d5a551",
+    "githubSecret":"ea5a6356e2a90e89d345d8e82958e5bfcb5c952e"
 }
