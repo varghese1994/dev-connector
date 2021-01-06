@@ -6,8 +6,9 @@ const {body,validationResult} = require('express-validator')
 //models
 const profileModel = require('../../models/Profile');
 const userModel = require('../../models/User');
+const postModel = require('../../models/Post')
 
-const { json, response } = require('express');
+
 const Profile = require('../../models/Profile');
 const request = require('request');
 const config = require('config')
@@ -61,11 +62,11 @@ router.post('/',[auth,[
     if(instagram) profileFields.social.instagram = instagram
     
     try {
-        let profile = await profileModel.findOne({user: req.user._id})
+        let profile = await profileModel.findOne({user: req.user.id})
         if(profile){
             //update
-            profile = await profileModel.findByIdAndUpdate({user: req.user._id},{$set: profileFields},{new: true})
-            return res.json(Profile)
+            profile = await profileModel.findOneAndUpdate({user: req.user.id},{$set: profileFields},{new: true});
+            return res.json(Profile);
         }
         //create
         profile = new profileModel(profileFields)
@@ -111,6 +112,8 @@ router.get('/user/:user_id',async(req,res)=>{
 //access    Private
 router.delete('/',auth,async(req,res)=>{
     try {
+        //remove post
+        await postModel.deleteMany({user: req.user.id})
         //remove profile
         await profileModel.findOneAndRemove({user: req.user.id})
         //remove user
